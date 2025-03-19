@@ -10,7 +10,6 @@ Note that this project **does not** adhere to [Semantic Versioning](https://semv
 ## [Unreleased]
 
 ### Added
-
 - We added <kbd>F5</kbd> as a shortcut key for fetching data and <kbd>Alt+F</kbd> as a shortcut for looking up data using DOI. [#11802](https://github.com/JabRef/jabref/issues/11802)
 - We added a feature to rename the subgroup, with the keybinding (<kbd>F2</kbd>) for quick access. [#11896](https://github.com/JabRef/jabref/issues/11896)
 - We added a new functionality that displays a drop-down list of matching suggestions when typing a citation key pattern. [#12502](https://github.com/JabRef/jabref/issues/12502)
@@ -54,6 +53,7 @@ Note that this project **does not** adhere to [Semantic Versioning](https://semv
 - We changed the phrase "Cleanup entries" to "Clean up entries". [#12703](https://github.com/JabRef/jabref/issues/12703)
 - A tooltip now appears after 300ms (instead of 2s). [#12649](https://github.com/JabRef/jabref/issues/12649)
 - We improved search in preferences and keybindings. [#12647](https://github.com/JabRef/jabref/issues/12647)
+- We improved the consistency check dialog box to showing something like processing entry 1 out of 123456.... [#12487](https://github.com/JabRef/jabref/issues/12487)
 
 ### Fixed
 
