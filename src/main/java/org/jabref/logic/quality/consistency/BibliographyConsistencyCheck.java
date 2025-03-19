@@ -33,7 +33,7 @@ public class BibliographyConsistencyCheck {
      *
      * @implNote This class does not implement {@link org.jabref.logic.integrity.DatabaseChecker}, because it returns a list of {@link org.jabref.logic.integrity.IntegrityMessage}, which are too fine-grained.
      */
-    public Result check(List<BibEntry> entries) {
+    public Result check(List<BibEntry> entries, IntConsumer progressCallback) {
         // collects fields existing in any entry, scoped by entry type
         Map<EntryType, Set<Field>> entryTypeToFieldsInAnyEntryMap = new HashMap<>();
         // collects fields existing in all entries, scoped by entry type
@@ -45,14 +45,17 @@ public class BibliographyConsistencyCheck {
 
         Map<EntryType, EntryTypeResult> resultMap = new HashMap<>();
 
-        entryTypeToFieldsInAnyEntryMap.forEach((entryType, fields) -> {
+        int processedEntries = 0;
+        int totalEntries = entries.size();
+        for (EntryType entryType : entryTypeToFieldsInAnyEntryMap.keySet()) {
+            Set<Field> fields = entryTypeToFieldsInAnyEntryMap.get(entryType);
             Set<Field> commonFields = entryTypeToFieldsInAllEntriesMap.get(entryType);
             assert commonFields != null;
             Set<Field> uniqueFields = new HashSet<>(fields);
             uniqueFields.removeAll(commonFields);
 
             if (uniqueFields.isEmpty()) {
-                return;
+                continue; // Skip to the next iteration if uniqueFields is empty
             }
 
             List<BibEntry> sortedEntries = entryTypeToEntriesMap
@@ -60,7 +63,10 @@ public class BibliographyConsistencyCheck {
                     .filter(entry -> !entry.getFields().equals(commonFields))
                     .sorted(getBibEntryComparator()).toList();
             resultMap.put(entryType, new EntryTypeResult(uniqueFields, sortedEntries));
-        });
+            processedEntries++;
+            int progress = (processedEntries * 100) / totalEntries;
+            progressCallback.accept(progress);
+        }
 
         return new Result(resultMap);
     }
