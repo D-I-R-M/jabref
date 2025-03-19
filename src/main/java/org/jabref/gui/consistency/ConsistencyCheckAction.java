@@ -51,7 +51,11 @@ public class ConsistencyCheckAction extends SimpleCommand {
             List<BibEntry> entries = databaseContext.getDatabase().getEntries();
 
             BibliographyConsistencyCheck consistencyCheck = new BibliographyConsistencyCheck();
-            return consistencyCheck.check(entries);
+            return consistencyCheck.check(entries, progress ->
+                    dialogService.showBackgroundProgressDialogAndWait(
+                            Localization.lang("Checking consistency..."),
+                            Localization.lang("processing %0 of %1", progress, 100),
+                            stateManager));
         }).onSuccess(result -> {
             if (result.entryTypeToResultMap().isEmpty()) {
                 dialogService.notify(Localization.lang("No problems found."));
